@@ -11,7 +11,7 @@ def call(body) {
     node() {
             stage("Checkout") {
                     checkout(scm)
-                env.JAVA_HOME = "${tool '8u152'}"
+                env.JAVA_HOME = "${tool 'java8'}"
                 env.M2_HOME = "${tool 'M3'}"
                 env.PATH = "${env.PATH}:${env.JAVA_HOME}/bin:${env.M2_HOME}/bin"
                 env.COMMIT_MESSAGE = sh(script: "git log -1 --pretty=%B", returnStdout: true).trim()
