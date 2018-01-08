@@ -55,13 +55,13 @@ def call(body) {
             sh "chmod 755 deploy_modules/*"
 
             withDockerServer([uri: "unix:///var/run/docker.sock"]) {
-                withDockerRegistry([url: "http://127.0.0.1:5000/"]) {
+                withDockerRegistry([url: "http://127.0.0.1:80/"]) {
 
                     def buildarg = ""
                     for (int port : exposePorts)
                         buildarg += "--build-arg ports=$port "
 
-                    def image = docker.build("127.0.0.1:5000/java_courses_2018/${config.username}", "$buildarg.")
+                    def image = docker.build("127.0.0.1:80/java_courses_2018/${config.username}", "$buildarg.")
                     image.push()
                 }
             }
