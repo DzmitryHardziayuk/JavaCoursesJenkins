@@ -74,8 +74,8 @@ ENTRYPOINT ["jettystart.sh"]"""
                     def buildarg = ""
                     for (int port : exposePorts)
                         buildarg += "--build-arg ports=$port "
-
-                    def image = docker.build("127.0.0.1:80/java_courses_2018/${config.username}", "$buildarg.")
+                    String repositoryUrl = "127.0.0.1:80/java_courses_2018/${config.username}";
+                    def image = docker.build(repositoryUrl.toLowerCase(), "$buildarg.")
                     image.push()
                 }
             }
