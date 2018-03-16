@@ -11,6 +11,7 @@ def call(body) {
     if (!config.username) {
         config.username = "undefined_user"
     }
+    final String repositoryUrl = "127.0.0.1:80/java_courses_2018/${config.username}".toLowerCase();
 
     node() {
         stage("Checkout") {
@@ -74,11 +75,23 @@ ENTRYPOINT ["jettystart.sh"]"""
                     def buildarg = ""
                     for (int port : exposePorts)
                         buildarg += "--build-arg ports=$port "
-                    String repositoryUrl = "127.0.0.1:80/java_courses_2018/${config.username}";
-                    def image = docker.build(repositoryUrl.toLowerCase(), "$buildarg.")
+                    def image = docker.build(repositoryUrl, "$buildarg.")
                     image.push()
                 }
             }
+        }
+
+        stage("Start container") {
+            final String containerName = config.username.toLowerCase()
+            sh "docker stop $containerName || exit 0"
+            sh "docker rm $containerName || exit 0"
+            sh "docker run -dP --name $containerName $repositoryUrl"
+            sh "docker ps | grep java\\_courses\\_2018 > /var/lib/jenkins/userContent/dockerPs.txt"
+            final String currentHost = sh(
+                    script: "cat /etc/hosts | head -2 | tail -1 | awk '{print \$2}'",
+                    returnStdout: true
+            ).trim()
+            println "http://$currentHost:8080/userContent/dockerPs.txt"
         }
     }
 }
