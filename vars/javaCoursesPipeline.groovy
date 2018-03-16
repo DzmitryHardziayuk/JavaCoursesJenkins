@@ -9,6 +9,12 @@ def call(body) {
     }
 
     config.username = scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0].toLowerCase()
+    println scm
+    println scm.getUserRemoteConfigs()
+    println scm.getUserRemoteConfigs()[0].getUrl()
+    println scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3]
+    println scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0]
+    println scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0].toLowerCase()
     if (!config.username) {
         config.username = "undefined_user"
     }
