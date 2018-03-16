@@ -11,6 +11,8 @@ def call(body) {
     if (!config.username) {
         config.username = "undefined_user"
     }
+    config.username = scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0].toLowerCase()
+    println config.username
     final String repositoryUrl = "127.0.0.1:80/java_courses_2018/${config.username}".toLowerCase();
 
     node() {
